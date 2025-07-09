@@ -1,0 +1,16 @@
+CREATE DATABASE IF NOT EXISTS reservation;
+USE reservation;
+
+CREATE TABLE IF NOT EXISTS reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    nom_evenement VARCHAR(100) NOT NULL,
+    date DATE NOT NULL,
+    heure TIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS compte (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL UNIQUE,
+    mot_passe VARCHAR(255) NOT NULL
+);

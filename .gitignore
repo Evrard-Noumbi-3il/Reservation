@@ -1,0 +1,6 @@
+/config/connexion.php
+*.log
+vendor/
+.env
+*.png
+*.jpg
