@@ -1,5 +1,12 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>À propos - Réservation Salle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 <?php include 'includes/header.php'; ?>
-<link rel="stylesheet" href="style.css">
 
 <div class="about-container">
     <h1>À propos de l'association</h1>
@@ -15,10 +22,10 @@
     <section class="section">
         <h2>Nos objectifs</h2>
         <ul>
-            <li> Simplifier la gestion et la réservation d'évènements</li>
-            <li> Garantir la sécurité des données utilisateurs</li>
-            <li> Offrir une interface intuitive et responsive</li>
-            <li> Appliquer concrètement nos compétences en développement web</li>
+            <li>Simplifier la gestion et la réservation d'évènements</li>
+            <li>Garantir la sécurité des données utilisateurs</li>
+            <li>Offrir une interface intuitive et responsive</li>
+            <li>Appliquer concrètement nos compétences en développement web</li>
         </ul>
     </section>
 
@@ -35,3 +42,5 @@
 </div>
 
 <?php include 'includes/footer.php'; ?>
+</body>
+</html>
