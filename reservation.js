@@ -1,60 +1,66 @@
-// reservation.js
-
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
-    const submitBtn = form.querySelector("button[type='submit']");
 
-    form.addEventListener("submit", function (e) {
-        // Désactiver le bouton pour éviter les doubles clics
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Envoi en cours...";
+    if (form) {
+        const submitBtn = form.querySelector("button[type='submit']");
 
-        // Vérifier les champs
-        const nom = form.nom.value.trim();
-        const date = form.date.value;
-        const heure = form.heure.value;
+        form.addEventListener("submit", function (e) {
+            const nom   = form.nom   ? form.nom.value.trim() : '';
+            const date  = form.date  ? form.date.value       : '';
+            const heure = form.heure ? form.heure.value      : '';
 
-        if (!nom || !date || !heure) {
-            e.preventDefault();
-            alert("Tous les champs sont obligatoires.");
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Réserver";
-            return;
-        }
+            if (!nom || !date || !heure) {
+                e.preventDefault();
+                alert("Tous les champs sont obligatoires.");
+                return;
+            }
 
-        // Vérifier si la date sélectionnée est passée
-        const selectedDate = new Date(date + "T" + heure);
-        const now = new Date();
-        if (selectedDate < now) {
-            e.preventDefault();
-            alert("Impossible de réserver une date passée.");
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Réserver";
-        }
-    });
-});
+            const selectedDate = new Date(date + "T" + heure);
+            const now          = new Date();
+            if (selectedDate < now) {
+                e.preventDefault();
+                alert("Impossible de réserver une date passée.");
+                return;
+            }
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-
-    deleteButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
-
-            if (confirm("Voulez-vous vraiment supprimer cette réservation ?")) {
-                fetch(`../backend/supprimer_reservation.php?id=${id}`, {
-                    method: 'GET'
-                })
-                .then(response => response.text())
-                .then(data => {
-                    if (data.trim() === "OK") {
-                        this.parentElement.remove(); // retire la carte du DOM
-                    } else {
-                        alert("Erreur : " + data);
-                    }
-                });
+            if (submitBtn) {
+                submitBtn.disabled    = true;
+                submitBtn.textContent = "Envoi en cours...";
             }
         });
+    }
+
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const id        = this.getAttribute('data-id');
+            const csrfToken = this.getAttribute('data-csrf');
+
+            if (!confirm("Voulez-vous vraiment supprimer cette réservation ?")) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('id',          id);
+            formData.append('csrf_token',  csrfToken);
+
+            fetch('../backend/supprimer_reservation.php', {
+                method: 'POST',
+                body:   formData
+            })
+            .then(function (response) { return response.text(); })
+            .then(function (data) {
+                if (data.trim() === "OK") {
+                    btn.closest('.reservation-card').remove();
+                } else {
+                    alert("Erreur : " + data);
+                }
+            })
+            .catch(function () {
+                alert("Erreur réseau lors de la suppression.");
+            });
+        });
     });
+
 });
